@@ -38,7 +38,7 @@ export async function createInvoice(formData: FormData) {
 
 export async function updateInvoice(id: string, formData: FormData) {
   const { customerId, amount, status } = UpdateInvoice.parse({
-    customerId: formData.get("customerID"),
+    customerId: formData.get("customerId"),
     amount: formData.get("amount"),
     status: formData.get("status"),
   });
@@ -46,9 +46,9 @@ export async function updateInvoice(id: string, formData: FormData) {
   const amountInCents = amount * 100;
 
   await sql`
-  UPDATE invoices
-  SET customer_id = ${customerId}, amount = ${amount}, status = ${status}
-  WHERE id = ${id}
+    UPDATE invoices
+    SET customer_id = ${customerId}, amount = ${amountInCents}, status = ${status}
+    WHERE id = ${id}
   `;
 
   revalidatePath("/dashboard/invoices");
